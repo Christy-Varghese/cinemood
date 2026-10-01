@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CineMood — Creative board</title>
+<!--FONTS-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Manrope:wght@400..800&display=swap" />
+<!--/FONTS-->
+<style>
+  :root {
+    --bg: #0f0e15; --elev: #17151f; --raised: #211e2b; --line: rgba(237,234,242,.09); --line2: rgba(237,234,242,.18);
+    --text: #edeaf2; --text2: #b9b4c6; --muted: #8f8a9e; --gold: #f0b04a; --ink: #1b1306;
+    --display: "Bricolage Grotesque", "Manrope", sans-serif; --body: "Manrope", system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; background: var(--bg); color: var(--text); font-family: var(--body); padding: 64px 72px 72px; position: relative; overflow: hidden; }
+  body::before { content: ""; position: absolute; inset: -200px -100px auto -100px; height: 900px; z-index: -1;
+    background: radial-gradient(40% 50% at 22% 20%, rgba(242,102,122,.20), transparent 70%), radial-gradient(40% 45% at 78% 10%, rgba(155,140,255,.18), transparent 70%); }
+  h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; line-height: 1.05; }
+  .top { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+  .brand { display: flex; align-items: center; gap: 14px; font-family: var(--display); font-weight: 700; font-size: 28px; }
+  .mark { width: 44px; height: 44px; }
+  h1 { font-size: 76px; font-weight: 700; margin-top: 28px; max-width: 900px; }
+  .concept { color: var(--text2); font-size: 20px; margin-top: 16px; max-width: 760px; line-height: 1.5; }
+  .principles { display: grid; gap: 10px; width: 470px; }
+  .principles div { padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: rgba(23,21,31,.7); font-size: 15px; color: var(--text2); line-height: 1.45; }
+  .principles b { color: var(--text); display: block; font-size: 15px; margin-bottom: 2px; }
+  section { margin-top: 54px; }
+  .label { font-family: var(--display); font-size: 26px; font-weight: 650; margin-bottom: 18px; display: flex; align-items: baseline; gap: 14px; }
+  .label small { font-family: var(--body); font-size: 14px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
+  .row { display: grid; gap: 24px; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1.1fr 1fr 1fr; }
+  .panel { border: 1px solid var(--line); border-radius: 22px; background: var(--elev); padding: 26px; }
+  .swatches { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .sw { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--elev); }
+  .sw i { display: block; height: 78px; }
+  .sw p { padding: 9px 10px 10px; font-size: 12px; color: var(--muted); line-height: 1.35; }
+  .sw p b { color: var(--text); font-size: 13px; display: block; }
+  .light .sw { background: #fff; border-color: rgba(23,21,30,.1); }
+  .light .sw p { color: #6c6779; } .light .sw p b { color: #17151e; }
+  .moods { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; }
+  .mood { border-radius: 14px; padding: 12px 10px; text-align: center; border: 1px solid var(--line); background: var(--elev); font-size: 13px; font-weight: 700; color: var(--text2); }
+  .mood .e { font-size: 24px; display: block; margin-bottom: 6px; }
+  .mood .h { display: block; font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .mood .bar { display: block; height: 4px; border-radius: 4px; margin-top: 8px; }
+  .type .specimen { font-family: var(--display); font-size: 120px; font-weight: 700; line-height: .9; letter-spacing: -.04em; }
+  .type .scale div { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .type .scale span { width: 120px; color: var(--muted); font-size: 13px; flex: none; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 650; border: 1px solid; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 999px; font-weight: 700; font-size: 15px; }
+  .comp { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .tile { width: 132px; height: 104px; border-radius: 14px; border: 1px solid var(--line); background: var(--elev); display: grid; place-items: center; align-content: center; gap: 8px; font-weight: 700; color: var(--text2); position: relative; }
+  .tile .e { font-size: 30px; }
+  .tile.on { border-color: #f2667a; background: color-mix(in oklab, #f2667a 16%, var(--elev)); color: var(--text); box-shadow: 0 0 0 1px #f2667a inset, 0 14px 34px -16px rgba(242,102,122,.7); }
+  .tile .n { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 99px; background: #f2667a; color: #111; font-size: 11px; font-weight: 900; display: grid; place-items: center; }
+  .card { width: 168px; }
+  .poster { aspect-ratio: 2/3; border-radius: 14px; background: linear-gradient(160deg, #3a2a3f, #191621 70%); position: relative; overflow: hidden; box-shadow: 0 18px 40px -18px rgba(0,0,0,.6); }
+  .poster::after { content: ""; position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(to top, rgba(0,0,0,.35), transparent); }
+  .card .lbl { color: var(--gold); font-size: 11px; font-weight: 750; margin-top: 10px; }
+  .card .t { font-weight: 750; font-size: 15px; margin-top: 4px; }
+  .card .m { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .dna div { display: grid; grid-template-columns: 112px 1fr 40px; gap: 12px; align-items: center; font-size: 14px; color: var(--text2); font-weight: 650; margin-bottom: 10px; }
+  .dna i { height: 10px; border-radius: 99px; background: var(--raised); position: relative; overflow: hidden; }
+  .dna i b { position: absolute; inset: 0 auto 0 0; border-radius: 99px; }
+  .dna em { font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+  .swipebtns { display: flex; gap: 14px; align-items: center; }
+  .sb { width: 62px; height: 62px; border-radius: 99px; display: grid; place-items: center; border: 1px solid var(--line2); background: var(--elev); font-size: 24px; font-weight: 800; }
+  .sb.s { width: 46px; height: 46px; font-size: 18px; color: var(--text2); }
+  /* wireframes */
+  .wires { display: grid; grid-template-columns: 1.55fr 1.55fr .62fr .62fr; gap: 22px; align-items: start; }
+  .frame { border: 1px solid var(--line2); border-radius: 16px; background: #13121a; padding: 0; overflow: hidden; }
+  .frame .cap { padding: 12px 14px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); background: var(--elev); }
+  .frame .cap b { color: var(--text); }
+  .scr { position: relative; padding: 12px; display: grid; gap: 8px; align-content: start; overflow: hidden; }
+  .wf { border-radius: 6px; background: #252232; }
+  .wf.l { background: #2d2a3c; } .wf.g { background: var(--gold); } .wf.o { border: 1.5px dashed #4a4560; background: transparent; }
+  .nav { height: 14px; display: flex; gap: 6px; } .nav .wf { height: 100%; }
+  .mob { aspect-ratio: 9/19.5; }
+  .annot { position: absolute; font-size: 10px; font-weight: 700; color: var(--gold); background: rgba(15,14,21,.9); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(240,176,74,.4); }
+  .tokens { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .tok { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: var(--elev); }
+  .tok b { font-family: var(--display); font-size: 22px; display: block; }
+  .tok span { color: var(--muted); font-size: 13px; }
+  footer { margin-top: 44px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div>
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 32 32"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F0B04A"/><stop offset="1" stop-color="#F2667A"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#g)"/><circle cx="16" cy="16" r="7.2" fill="none" stroke="#1b1306" stroke-width="2.6"/><circle cx="16" cy="16" r="2.4" fill="#1b1306"/></svg>
+        CineMood · Creative board
+      </div>
+      <h1>The room is dark. The movie is the light.</h1>
+      <p class="concept">A blue-violet auditorium black, one marquee-gold action colour, and a single bold move: the colours of the moods you pick spill into the page as a soft "screen glow". Everything else stays quiet so posters can be the colour.</p>
+    </div>
+    <div class="principles">
+      <div><b>Mood first, genre second</b>Mood is the primary interaction on every screen; genre is a filter, never the headline.</div>
+      <div><b>Poster-first, chrome-light</b>Cards have no boxes. Metadata sits under the art, never on it.</div>
+      <div><b>Honest by design</b>No invented ratings or availability. Empty and error states say what to do next.</div>
+      <div><b>World cinema by default</b>Diversity is built into ranking; languages show their native names.</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="label">Colour <small>Dark is the primary experience · light fully supported</small></div>
+    <div class="row cols-2">
+      <div class="swatches">
+        <div class="sw"><i style="background:#0f0e15"></i><p><b>Auditorium</b>#0F0E15 · bg</p></div>
+        <div class="sw"><i style="background:#17151f"></i><p><b>Seat</b>#17151F · elevated</p></div>
+        <div class="sw"><i style="background:#211e2b"></i><p><b>Aisle</b>#211E2B · raised</p></div>
+        <div class="sw"><i style="background:#edeaf2"></i><p><b>Screen</b>#EDEAF2 · text</p></div>
+        <div class="sw"><i style="background:#b9b4c6"></i><p><b>Credits</b>#B9B4C6 · text-2</p></div>
+        <div class="sw"><i style="background:#8f8a9e"></i><p><b>Usher</b>#8F8A9E · muted</p></div>
+        <div class="sw"><i style="background:#f0b04a"></i><p><b>Marquee</b>#F0B04A · action</p></div>
+      </div>
+      <div class="swatches light">
+        <div class="sw"><i style="background:#f6f4f8"></i><p><b>Matinee</b>#F6F4F8 · bg</p></div>
+        <div class="sw"><i style="background:#ffffff"></i><p><b>Paper</b>#FFFFFF · elevated</p></div>
+        <div class="sw"><i style="background:#eeebf3"></i><p><b>Mist</b>#EEEBF3 · raised</p></div>
+        <div class="sw"><i style="background:#17151e"></i><p><b>Ink</b>#17151E · text</p></div>
+        <div class="sw"><i style="background:#3f3b4d"></i><p><b>Graphite</b>#3F3B4D · text-2</p></div>
+        <div class="sw"><i style="background:#6c6779"></i><p><b>Slate</b>#6C6779 · muted</p></div>
+        <div class="sw"><i style="background:#c07a10"></i><p><b>Brass</b>#C07A10 · action</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Mood spectrum <small>20 moods · each accent tints chips, Mood DNA bars and the screen glow</small></div>
+    <div class="moods">
+      <div class="mood"><span class="e">😊</span>Happy<span class="h">#F7C948</span><span class="bar" style="background:#F7C948"></span></div>
+      <div class="mood"><span class="e">❤️</span>Romantic<span class="h">#F2667A</span><span class="bar" style="background:#F2667A"></span></div>
+      <div class="mood"><span class="e">😂</span>Funny<span class="h">#FFB347</span><span class="bar" style="background:#FFB347"></span></div>
+      <div class="mood"><span class="e">😢</span>Emotional<span class="h">#7AA7FF</span><span class="bar" style="background:#7AA7FF"></span></div>
+      <div class="mood"><span class="e">🔥</span>Exciting<span class="h">#FF7A45</span><span class="bar" style="background:#FF7A45"></span></div>
+      <div class="mood"><span class="e">😱</span>Scary<span class="h">#B583FF</span><span class="bar" style="background:#B583FF"></span></div>
+      <div class="mood"><span class="e">🧠</span>Thoughtful<span class="h">#5FD3C6</span><span class="bar" style="background:#5FD3C6"></span></div>
+      <div class="mood"><span class="e">😌</span>Relaxing<span class="h">#8FD694</span><span class="bar" style="background:#8FD694"></span></div>
+      <div class="mood"><span class="e">💪</span>Motivating<span class="h">#FF9F43</span><span class="bar" style="background:#FF9F43"></span></div>
+      <div class="mood"><span class="e">🤯</span>Mind-Bending<span class="h">#9B8CFF</span><span class="bar" style="background:#9B8CFF"></span></div>
+      <div class="mood"><span class="e">🌙</span>Dark<span class="h">#8A93A6</span><span class="bar" style="background:#8A93A6"></span></div>
+      <div class="mood"><span class="e">✨</span>Inspiring<span class="h">#FFD166</span><span class="bar" style="background:#FFD166"></span></div>
+      <div class="mood"><span class="e">📼</span>Nostalgic<span class="h">#D4A373</span><span class="bar" style="background:#D4A373"></span></div>
+      <div class="mood"><span class="e">🧭</span>Adventurous<span class="h">#4CC9F0</span><span class="bar" style="background:#4CC9F0"></span></div>
+      <div class="mood"><span class="e">🫖</span>Comforting<span class="h">#E9B872</span><span class="bar" style="background:#E9B872"></span></div>
+      <div class="mood"><span class="e">🌅</span>Hopeful<span class="h">#F4A261</span><span class="bar" style="background:#F4A261"></span></div>
+      <div class="mood"><span class="e">⚡</span>Intense<span class="h">#E63946</span><span class="bar" style="background:#E63946"></span></div>
+      <div class="mood"><span class="e">🕵️</span>Mysterious<span class="h">#6C8EBF</span><span class="bar" style="background:#6C8EBF"></span></div>
+      <div class="mood"><span class="e">🌈</span>Feel-Good<span class="h">#72EFDD</span><span class="bar" style="background:#72EFDD"></span></div>
+      <div class="mood"><span class="e">🥀</span>Sad<span class="h">#6D7FA6</span><span class="bar" style="background:#6D7FA6"></span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="row cols-3">
+      <div class="panel type">
+        <div class="label">Type</div>
+        <div class="specimen">Aa Bb</div>
+        <p style="color:var(--text2);margin:10px 0 16px;font-size:15px"><b style="color:var(--text)">Bricolage Grotesque</b> for display — characterful, condensed at large sizes. <b style="color:var(--text)">Manrope</b> for everything you read.</p>
+        <div class="scale">
+          <div><span>H1 · 48–72</span><h1 style="font-size:44px;margin:0">What's your mood?</h1></div>
+          <div><span>H2 · 32–44</span><h2 style="font-size:30px">Mood DNA</h2></div>
+          <div><span>H3 · 20–28</span><h3 style="font-size:22px">Picked for your taste</h3></div>
+          <div><span>Body · 16</span><p style="font-size:16px;color:var(--text2)">Scores strongly for romantic and emotional.</p></div>
+          <div style="border:0"><span>Meta · 13</span><p style="font-size:13px;color:var(--muted)">2016 · Korean · 2h 25m · ★ 8.2</p></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="label">Components</div>
+        <div class="comp">
+          <div class="tile"><span class="e">😢</span>Emotional</div>
+          <div class="tile on"><span class="n">1</span><span class="e">❤️</span>Romantic</div>
+        </div>
+        <div class="comp" style="margin-top:18px">
+          <span class="chip" style="color:#f7a3ae;background:rgba(242,102,122,.14);border-color:rgba(242,102,122,.25)">❤️ Romantic</span>
+          <span class="chip" style="color:#b5cdff;background:rgba(122,167,255,.14);border-color:rgba(122,167,255,.25)">😢 Emotional</span>
+          <span class="chip" style="color:#c7bfff;background:rgba(155,140,255,.14);border-color:rgba(155,140,255,.25)">🤯 Mind-Bending</span>
+        </div>
+        <div class="comp" style="margin-top:18px">
+          <span class="btn" style="background:var(--gold);color:var(--ink)">Find my movie</span>
+          <span class="btn" style="border:1px solid var(--line2)">🎲 Surprise me</span>
+          <span class="btn" style="background:var(--raised)">Mark watched</span>
+        </div>
+        <div class="comp" style="margin-top:22px;gap:18px;align-items:flex-start">
+          <div class="card"><div class="poster"></div><div class="lbl">Great mood match</div><div class="t">Poster-first card</div><div class="m">2016 · Korean · 2h 25m</div></div>
+          <div class="swipebtns" style="flex-direction:column;align-items:flex-start;gap:10px">
+            <div style="font-size:13px;color:var(--muted);font-weight:650">Swipe controls</div>
+            <div class="swipebtns"><span class="sb s">↶</span><span class="sb" style="color:#ff6b6b">✕</span><span class="sb" style="color:#f5c451;width:54px;height:54px">★</span><span class="sb" style="color:#6fd3a0">♥</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="label">Mood DNA</div>
+        <div class="dna">
+          <div>❤️ Romantic<i><b style="width:90%;background:#F2667A"></b></i><em>90%</em></div>
+          <div>😢 Emotional<i><b style="width:83%;background:#7AA7FF"></b></i><em>83%</em></div>
+          <div>⚡ Intense<i><b style="width:78%;background:#E63946"></b></i><em>78%</em></div>
+          <div>🕵️ Mysterious<i><b style="width:71%;background:#6C8EBF"></b></i><em>71%</em></div>
+          <div>🧠 Thoughtful<i><b style="width:53%;background:#5FD3C6"></b></i><em>53%</em></div>
+          <div>🔥 Exciting<i><b style="width:50%;background:#FF7A45"></b></i><em>50%</em></div>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-top:6px">Every film is a weighted profile across 20 moods — never a single label.</p>
+        <div class="label" style="margin-top:26px">Swipe stamps</div>
+        <div class="comp">
+          <span style="border:4px solid #6fd3a0;color:#6fd3a0;border-radius:10px;padding:4px 12px;font-family:var(--display);font-weight:800;font-size:22px;transform:rotate(-10deg)">Watchlist</span>
+          <span style="border:4px solid #ff6b6b;color:#ff6b6b;border-radius:10px;padding:4px 12px;font-family:var(--display);font-weight:800;font-size:22px;transform:rotate(10deg)">Skip</span>
+          <span style="border:4px solid #f5c451;color:#f5c451;border-radius:10px;padding:4px 12px;font-family:var(--display);font-weight:800;font-size:22px;transform:rotate(-4deg)">Love it</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Layouts <small>Desktop 1280–1440 · mobile 375–430 · no horizontal scroll</small></div>
+    <div class="wires">
+      <div class="frame">
+        <div class="scr" style="height:360px">
+          <div class="nav"><div class="wf g" style="width:16px"></div><div class="wf" style="width:60px"></div><div class="wf" style="flex:1;background:transparent"></div><div class="wf" style="width:90px"></div></div>
+          <div class="wf" style="height:10px;width:20%;margin:16px auto 0"></div>
+          <div class="wf l" style="height:26px;width:46%;margin:2px auto 0"></div>
+          <div class="wf l" style="height:26px;width:36%;margin:0 auto"></div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:72%;margin:10px auto 0">
+            <div class="wf" style="height:42px"></div><div class="wf" style="height:42px;outline:2px solid #F2667A"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div>
+            <div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px;outline:2px solid #9B8CFF"></div><div class="wf" style="height:42px"></div><div class="wf" style="height:42px"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:72%;margin:4px auto 0"><div class="wf o" style="height:16px"></div><div class="wf o" style="height:16px"></div><div class="wf o" style="height:16px"></div><div class="wf o" style="height:16px"></div><div class="wf o" style="height:16px"></div><div class="wf o" style="height:16px"></div></div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:6px"><div class="wf g" style="height:22px;width:90px;border-radius:99px"></div><div class="wf o" style="height:22px;width:90px;border-radius:99px"></div></div>
+          <div class="wf o" style="height:22px;width:44%;margin:4px auto 0;border-radius:99px"></div>
+          <span class="annot" style="left:70%;top:120px">1–3 moods</span><span class="annot" style="left:76%;top:206px">optional filters</span>
+        </div>
+        <div class="cap"><b>Home</b> — hero question, 12 mood tiles (+8 more), optional refinements, Find / Surprise, ask in plain words.</div>
+      </div>
+      <div class="frame">
+        <div class="scr" style="height:360px">
+          <div class="nav"><div class="wf g" style="width:16px"></div><div class="wf" style="width:60px"></div><div class="wf" style="flex:1;background:transparent"></div><div class="wf" style="width:90px"></div></div>
+          <div style="position:relative;height:150px;border-radius:8px;background:linear-gradient(to top,#13121a 10%,#3a2f45);margin:0 -12px;padding:0 24px;display:flex;align-items:flex-end;gap:14px">
+            <div class="wf l" style="width:62px;height:92px;margin-bottom:-14px"></div>
+            <div style="flex:1;display:grid;gap:6px;padding-bottom:4px"><div style="display:flex;gap:4px"><div class="wf" style="height:8px;width:30px;background:#F2667A"></div><div class="wf" style="height:8px;width:30px;background:#7AA7FF"></div></div><div class="wf l" style="height:20px;width:58%"></div><div class="wf" style="height:8px;width:40%"></div><div style="display:flex;gap:5px"><div class="wf g" style="height:16px;width:70px;border-radius:99px"></div><div class="wf" style="height:16px;width:56px;border-radius:99px"></div><div class="wf" style="height:16px;width:56px;border-radius:99px"></div></div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:12px;margin-top:14px">
+            <div style="display:grid;gap:6px"><div class="wf l" style="height:12px;width:30%"></div><div class="wf" style="height:30px"></div><div class="wf l" style="height:12px;width:40%;margin-top:6px"></div><div class="wf o" style="height:22px"></div><div class="wf l" style="height:12px;width:24%;margin-top:6px"></div><div style="display:grid;gap:4px"><div class="wf" style="height:6px;width:90%;background:#F2667A"></div><div class="wf" style="height:6px;width:83%;background:#7AA7FF"></div><div class="wf" style="height:6px;width:78%;background:#E63946"></div><div class="wf" style="height:6px;width:53%;background:#5FD3C6"></div></div></div>
+            <div style="display:grid;gap:6px;align-content:start"><div class="wf l" style="height:10px;width:60%"></div><div style="display:flex;gap:4px"><div class="wf" style="height:22px;width:22px"></div><div class="wf" style="height:22px;width:22px"></div><div class="wf" style="height:22px;width:22px"></div></div><div class="wf l" style="height:10px;width:40%;margin-top:6px"></div><div class="wf" style="height:46px"></div><div class="wf l" style="height:10px;width:40%;margin-top:6px"></div><div class="wf" style="height:30px"></div></div>
+          </div>
+          <span class="annot" style="left:8%;top:236px">why it matches · mood DNA · cast · reviews</span><span class="annot" style="left:66%;top:200px">watch · ratings · awards</span>
+        </div>
+        <div class="cap"><b>Movie</b> — cinematic backdrop, mood chips, library actions; reading column + licensed where-to-watch sidebar.</div>
+      </div>
+      <div class="frame">
+        <div class="scr mob">
+          <div class="nav"><div class="wf g" style="width:12px"></div><div class="wf" style="width:40px"></div><div class="wf" style="flex:1;background:transparent"></div><div class="wf" style="width:36px"></div></div>
+          <div class="wf l" style="height:14px;width:80%;margin:12px auto 0"></div>
+          <div class="wf l" style="height:14px;width:60%;margin:0 auto"></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px">
+            <div class="wf" style="height:34px"></div><div class="wf" style="height:34px;outline:2px solid #F2667A"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px"></div><div class="wf" style="height:34px;outline:2px solid #9B8CFF"></div><div class="wf" style="height:34px"></div>
+          </div>
+          <div class="wf g" style="height:20px;border-radius:99px;margin-top:6px"></div>
+          <div class="wf o" style="height:20px;border-radius:99px"></div>
+          <div style="position:absolute;inset:auto 0 0 0;height:30px;background:var(--elev);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;justify-items:center"><div class="wf g" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div></div>
+        </div>
+        <div class="cap"><b>Mobile home</b> — 3-col thumb grid, bottom nav.</div>
+      </div>
+      <div class="frame">
+        <div class="scr mob">
+          <div class="nav"><div class="wf g" style="width:12px"></div><div class="wf" style="width:40px"></div></div>
+          <div style="display:flex;gap:4px;margin-top:6px;overflow:hidden"><div class="wf o" style="height:14px;min-width:46px;border-radius:99px"></div><div class="wf" style="height:14px;min-width:40px;border-radius:99px;background:#F2667A55"></div><div class="wf o" style="height:14px;min-width:40px;border-radius:99px"></div></div>
+          <div style="position:relative;height:210px;margin-top:6px">
+            <div class="wf" style="position:absolute;inset:10px 10px 0;transform:scale(.94);opacity:.6"></div>
+            <div style="position:absolute;inset:0;border-radius:12px;background:linear-gradient(to top,#0b0a10 30%,#3a2a3f);transform:rotate(6deg) translateX(12px);box-shadow:0 10px 24px rgba(0,0,0,.5)">
+              <span style="position:absolute;left:8px;top:12px;border:2px solid #6fd3a0;color:#6fd3a0;font-size:9px;font-weight:800;padding:1px 4px;border-radius:4px;transform:rotate(-12deg)">Watchlist</span>
+              <div class="wf l" style="position:absolute;left:10px;right:30px;bottom:30px;height:12px"></div>
+              <div style="position:absolute;left:10px;bottom:14px;display:flex;gap:3px"><div class="wf" style="height:8px;width:24px;background:#F2667A"></div><div class="wf" style="height:8px;width:24px;background:#7AA7FF"></div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;justify-content:center;margin-top:10px"><div class="wf" style="width:16px;height:16px;border-radius:99px"></div><div class="wf" style="width:24px;height:24px;border-radius:99px;outline:1.5px solid #ff6b6b"></div><div class="wf" style="width:20px;height:20px;border-radius:99px;outline:1.5px solid #f5c451"></div><div class="wf" style="width:24px;height:24px;border-radius:99px;outline:1.5px solid #6fd3a0"></div></div>
+          <div style="position:absolute;inset:auto 0 0 0;height:30px;background:var(--elev);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;justify-items:center"><div class="wf" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div><div class="wf g" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div><div class="wf" style="width:12px;height:12px"></div></div>
+        </div>
+        <div class="cap"><b>Swipe</b> — drag right / left / up, undo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Tokens</div>
+    <div class="tokens">
+      <div class="tok"><b>10 · 14 · 22 · 26</b><span>Radius — inputs · cards · panels · swipe card</span></div>
+      <div class="tok"><b>16 → 40 px</b><span>Gutter — fluid clamp(16px, 4vw, 40px)</span></div>
+      <div class="tok"><b>64 / 68 px</b><span>Header / mobile bottom-nav height</span></div>
+      <div class="tok"><b>≥ 44 px</b><span>Touch targets · visible gold focus ring · reduced-motion respected</span></div>
+    </div>
+  </section>
+
+  <footer><span>CineMood · design system v1 · tokens live in app/globals.css · moods in lib/moods/taxonomy.ts</span><span>cinemood-sand.vercel.app</span></footer>
+</body>
+</html>
