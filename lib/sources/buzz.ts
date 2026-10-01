@@ -137,7 +137,7 @@ async function wikipediaRevival(cutoffYear: number): Promise<VintageItem[]> {
   const top = await topArticles();
   const titles = [...top.entries()].sort((a, b) => b[1] - a[1]).slice(0, 1000).map(([t]) => t);
   const films = await filmsForTitles(titles);
-  const old = [...films.entries()].filter(([, f]) => f.year !== null && f.year <= cutoffYear).slice(0, 40);
+  const old = [...films.entries()].filter(([, f]) => f.year !== null && f.year <= cutoffYear).slice(0, 60);
 
   const spikes = await Promise.allSettled(old.map(async ([article, f]) => ({ f, s: await spikeFor(article) })));
   const candidates = spikes
@@ -155,7 +155,8 @@ async function wikipediaRevival(cutoffYear: number): Promise<VintageItem[]> {
 }
 
 async function tmdbRevival(cutoffYear: number): Promise<VintageItem[]> {
-  const pages = await Promise.allSettled([getTrending("day", 1), getTrending("day", 2), getTrending("week", 1), getTrending("week", 2), getTrending("week", 3)]);
+  // Older films rarely crack TMDB's top 100, so look deeper: 8 pages of each window (~320 titles).
+  const pages = await Promise.allSettled((["day", "week"] as const).flatMap((w) => [1, 2, 3, 4, 5, 6, 7, 8].map((p) => getTrending(w, p))));
   const seen = new Map<number, VintageItem>();
   let rank = 0;
   for (const p of pages) {
@@ -164,7 +165,7 @@ async function tmdbRevival(cutoffYear: number): Promise<VintageItem[]> {
       rank++;
       const y = m.releaseDate ? Number.parseInt(m.releaseDate.slice(0, 4), 10) : NaN;
       if (!(y <= cutoffYear) || seen.has(m.tmdbId)) continue;
-      seen.set(m.tmdbId, { movie: m, signal: { tmdbRank: rank }, score: 1.6 - Math.min(rank, 100) / 100 });
+      seen.set(m.tmdbId, { movie: m, signal: { tmdbRank: rank }, score: 1.4 - Math.min(rank, 320) / 320 });
     }
   }
   if (pages.every((p) => p.status === "rejected")) throw (pages[0] as PromiseRejectedResult).reason;
@@ -189,7 +190,7 @@ async function computeVintage(): Promise<VintageItem[]> {
 }
 
 /** Cached for 6 hours across pages; the TMDB-not-configured error still propagates. */
-export const getVintageTrending = unstable_cache(computeVintage, ["vintage-trending-v1"], { revalidate: 60 * 60 * 6, tags: ["vintage"] });
+export const getVintageTrending = unstable_cache(computeVintage, ["vintage-trending-v2"], { revalidate: 60 * 60 * 6, tags: ["vintage"] });
 
 /** One-line, human explanation of why a film is in the list. */
 export function vintageReason(v: VintageItem) {
