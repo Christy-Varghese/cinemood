@@ -41,8 +41,10 @@ export interface Credit {
   movie: MovieSummary;
   /** "Acting" for cast credits, otherwise the TMDB crew department. */
   departments: string[];
-  /** Character names and/or crew jobs, e.g. "Cobb" or "Director, Writer". */
-  roles: string[];
+  /** Characters played, e.g. ["Cobb"]. */
+  characters: string[];
+  /** Crew jobs, e.g. ["Director", "Writer"]. */
+  jobs: string[];
 }
 
 export interface PersonDetail {
@@ -63,16 +65,16 @@ export interface PersonDetail {
 export async function getPerson(id: number): Promise<PersonDetail> {
   const r = await tmdb<RawPerson>(`/person/${id}`, { append_to_response: "movie_credits,external_ids" }, 60 * 60 * 24);
   const map = new Map<number, Credit>();
-  const add = (c: RawCredit, dept: string, role: string | undefined) => {
+  const add = (c: RawCredit, dept: string, kind: "characters" | "jobs", role: string | undefined) => {
     if (c.adult) return;
-    const entry = map.get(c.id) ?? { movie: normalizeMovie(c), departments: [], roles: [] };
+    const entry = map.get(c.id) ?? { movie: normalizeMovie(c), departments: [], characters: [], jobs: [] };
     if (!entry.departments.includes(dept)) entry.departments.push(dept);
     const clean = role?.trim();
-    if (clean && !entry.roles.includes(clean)) entry.roles.push(clean);
+    if (clean && !entry[kind].includes(clean)) entry[kind].push(clean);
     map.set(c.id, entry);
   };
-  for (const c of r.movie_credits?.cast ?? []) add(c, "Acting", c.character);
-  for (const c of r.movie_credits?.crew ?? []) add(c, c.department || "Crew", c.job);
+  for (const c of r.movie_credits?.cast ?? []) add(c, "Acting", "characters", c.character);
+  for (const c of r.movie_credits?.crew ?? []) add(c, c.department || "Crew", "jobs", c.job);
 
   return {
     id: r.id,

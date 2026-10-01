@@ -13,7 +13,8 @@ import type { MovieSummary } from "@/types/movie";
 export interface FilmCredit {
   movie: MovieSummary;
   departments: string[];
-  roles: string[];
+  characters: string[];
+  jobs: string[];
 }
 
 type View = "grid" | "list";
@@ -30,11 +31,10 @@ const today = new Date().toISOString().slice(0, 10);
 
 /** Role text shown under a title: "as Cobb", "Director · Writer". */
 function roleLabel(c: FilmCredit, dept: string) {
-  if (dept === "Acting" || (dept === "All" && c.departments.includes("Acting"))) {
-    const chars = c.departments.includes("Acting") ? c.roles.filter(Boolean) : [];
-    if (chars.length) return `as ${chars.slice(0, 2).join(" / ")}`;
-  }
-  return c.roles.slice(0, 3).join(" · ");
+  const asChar = c.characters.length ? `as ${c.characters.slice(0, 2).join(" / ")}` : "";
+  if (dept === "Acting") return asChar;
+  if (dept === "All") return [asChar, ...c.jobs.slice(0, 2)].filter(Boolean).join(" · ");
+  return c.jobs.slice(0, 3).join(" · ");
 }
 
 export function Filmography({ name, credits, knownFor }: { name: string; credits: FilmCredit[]; knownFor: string }) {
