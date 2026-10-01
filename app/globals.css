@@ -2284,3 +2284,301 @@ main {
     gap: 12px;
   }
 }
+
+/* ───────── Cast links ───────── */
+a.cast-member {
+  color: inherit;
+  text-decoration: none;
+  border-radius: 14px;
+}
+a.cast-member .cast-photo {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+a.cast-member:hover .cast-photo,
+a.cast-member:focus-visible .cast-photo {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 2px var(--marquee), 0 10px 24px -10px color-mix(in oklab, var(--marquee) 60%, transparent);
+}
+a.cast-member:hover strong {
+  color: var(--marquee);
+}
+.text-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--marquee) 55%, transparent);
+  text-underline-offset: 3px;
+}
+.text-link:hover {
+  color: var(--marquee);
+}
+
+/* ───────── Person page ───────── */
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--marquee);
+  margin: 0 0 6px;
+}
+.person-hero {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 36px 0 8px;
+}
+.person-photo {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg-raised);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--muted);
+  box-shadow: 0 24px 60px -28px rgb(0 0 0 / 0.7);
+}
+.person-photo img {
+  object-fit: cover;
+}
+.person-info h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.02;
+}
+.person-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin: 18px 0 0;
+}
+.person-facts dt {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 700;
+}
+.person-facts dd {
+  margin: 2px 0 0;
+  font-weight: 650;
+}
+@media (max-width: 640px) {
+  .person-hero {
+    grid-template-columns: 112px 1fr;
+    gap: 18px;
+    padding-top: 22px;
+    align-items: start;
+  }
+  .person-facts {
+    gap: 8px 18px;
+  }
+}
+.bio summary {
+  list-style: none;
+  cursor: pointer;
+}
+.bio summary::-webkit-details-marker {
+  display: none;
+}
+.bio[open] summary .prose {
+  display: none;
+}
+.bio-more {
+  font-weight: 700;
+  color: var(--marquee);
+  font-size: 0.9rem;
+}
+.bio[open] .bio-more::before {
+  content: "Show less";
+}
+.bio[open] .bio-more {
+  font-size: 0;
+}
+.bio[open] .bio-more::before {
+  font-size: 0.9rem;
+}
+.bio .prose + .prose {
+  margin-top: 12px;
+}
+
+/* ───────── Filmography ───────── */
+.filmo-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.filmo-tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.filmo-tools .select {
+  min-height: 40px;
+  width: auto;
+}
+.tab-count {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--text) 10%, transparent);
+}
+.view-toggle {
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+}
+.view-toggle button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 32px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.view-toggle button[aria-pressed="true"] {
+  background: color-mix(in oklab, var(--marquee) 20%, var(--bg-raised));
+  color: var(--text);
+}
+.filmo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.filmo-row {
+  display: grid;
+  grid-template-columns: 52px 48px 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.filmo-row:hover {
+  background: color-mix(in oklab, var(--text) 4%, transparent);
+}
+.filmo-year {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.filmo-thumb {
+  position: relative;
+  width: 48px;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+.filmo-thumb img {
+  object-fit: cover;
+}
+.filmo-thumb .poster-fallback {
+  font-size: 0.5rem;
+}
+.filmo-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.filmo-title {
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.filmo-title:hover {
+  color: var(--marquee);
+}
+.filmo-role {
+  font-size: 0.84rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.filmo-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.86rem;
+}
+.filmo-rating {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-weight: 700;
+}
+.filmo-rating svg {
+  color: var(--marquee);
+}
+.filmo-lang {
+  color: var(--muted);
+}
+@media (max-width: 640px) {
+  .filmo-row {
+    grid-template-columns: 40px 40px 1fr auto;
+    gap: 10px;
+  }
+  .filmo-thumb {
+    width: 40px;
+  }
+  .filmo-lang {
+    display: none;
+  }
+  .filmo-row .icon-btn {
+    display: none;
+  }
+}
+
+/* ───────── Revival ───────── */
+.revival-cell {
+  position: relative;
+}
+.hot-badge {
+  position: absolute;
+  z-index: 3;
+  top: 8px;
+  left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f0b04a, #f2667a);
+  color: #1b1306;
+  box-shadow: 0 6px 16px -6px rgb(0 0 0 / 0.6);
+  pointer-events: none;
+}
+.how-box {
+  margin: -6px 0 22px;
+  max-width: 760px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+}
+.how-box summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.how-box p {
+  margin: 10px 0 2px;
+  color: var(--text-2);
+  line-height: 1.55;
+}

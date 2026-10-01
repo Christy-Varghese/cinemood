@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { VintageRail } from "@/components/revival/VintageRail";
 import { MovieRail } from "@/components/movie/MovieRail";
-import { ConfigNotice, ErrorState } from "@/components/ui/States";
+import { ConfigNotice, ErrorState, RailSkeleton } from "@/components/ui/States";
 import { discover, getList } from "@/lib/tmdb/movies";
 import { trendingBlend, traktWatchingNow } from "@/lib/recommendations/service";
 import { ruleBasedProfile } from "@/lib/mood-engine/rules";
@@ -46,6 +48,9 @@ export default async function TrendingPage() {
         <p>Blended from today&apos;s and this week&apos;s momentum — then sliced by region, language and mood.</p>
       </header>
       <MovieRail title="Trending globally" subtitle="TMDB momentum blended with what Trakt members are watching." movies={global} priority />
+      <Suspense fallback={<div className="section"><RailSkeleton /></div>}>
+        <VintageRail />
+      </Suspense>
       <MovieRail title="Watching right now on Trakt" subtitle="Live from the Trakt community." movies={res.data.trakt ?? []} />
       <MovieRail title={`In theatres in ${regionName}`} movies={res.data.regional?.results ?? []} />
       {(["ko", "ml", "hi", "ja"] as const).map((code) => (

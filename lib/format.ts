@@ -48,3 +48,18 @@ export function timeAgo(iso: string) {
   const d = new Date(iso);
   return d.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric" });
 }
+
+const slugify = (s: string) =>
+  s
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60);
+
+/** SEO-friendly person path: /person/6193-leonardo-dicaprio */
+export function personPath(p: { id: number; name: string }) {
+  const slug = slugify(p.name);
+  return `/person/${p.id}${slug ? `-${slug}` : ""}`;
+}

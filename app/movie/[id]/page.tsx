@@ -18,7 +18,7 @@ import { getMovieDetail } from "@/lib/tmdb/movies";
 import { TmdbError, TmdbNotConfiguredError } from "@/lib/tmdb/client";
 import { getMoods, getStoredProfiles } from "@/lib/db/repository";
 import { IMG } from "@/lib/tmdb/images";
-import { lang, moviePath, rating, runtime, toLite, year } from "@/lib/format";
+import { lang, moviePath, personPath, rating, runtime, toLite, year } from "@/lib/format";
 import { topMoods } from "@/lib/mood-engine/rules";
 import { env } from "@/lib/env";
 import { t } from "@/lib/i18n";
@@ -188,15 +188,16 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                 <h2 id="cast" style={{ marginBottom: 18 }}>
                   {t.movie.cast}
                 </h2>
+                <p className="muted-note" style={{ margin: "-10px 0 16px" }}>Tap anyone to see every film they&apos;ve been in.</p>
                 <div className="cast" role="list">
                   {movie.cast.map((c) => {
                     const src = IMG.profile(c.profilePath);
                     return (
-                      <div className="cast-member" role="listitem" key={`${c.id}-${c.order}`}>
-                        <span className="cast-photo">{src ? <Image src={src} alt={c.name} fill sizes="112px" /> : <span aria-hidden>{c.name.slice(0, 1)}</span>}</span>
+                      <Link className="cast-member" role="listitem" key={`${c.id}-${c.order}`} href={personPath(c)} aria-label={`${c.name}${c.character ? ` as ${c.character}` : ""} — see their films`}>
+                        <span className="cast-photo">{src ? <Image src={src} alt="" fill sizes="112px" /> : <span aria-hidden>{c.name.slice(0, 1)}</span>}</span>
                         <strong>{c.name}</strong>
                         {c.character && <span>{c.character}</span>}
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -225,13 +226,33 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                 {movie.directors.length > 0 && (
                   <div>
                     <dt>{movie.directors.length > 1 ? t.movie.directors : t.movie.director}</dt>
-                    <dd>{movie.directors.map((d) => d.name).join(", ")}</dd>
+                    <dd>
+                      {movie.directors.map((d, i) => (
+                        <span key={d.id}>
+                          {i > 0 && ", "}
+                          <Link className="text-link" href={personPath(d)}>
+                            {d.name}
+                          </Link>
+                        </span>
+                      ))}
+                    </dd>
                   </div>
                 )}
                 {movie.writers.length > 0 && (
                   <div>
                     <dt>Writing</dt>
-                    <dd>{[...new Set(movie.writers.map((w) => w.name))].join(", ")}</dd>
+                    <dd>
+                      {movie.writers
+                        .filter((w, i, all) => all.findIndex((x) => x.id === w.id) === i)
+                        .map((w, i) => (
+                          <span key={w.id}>
+                            {i > 0 && ", "}
+                            <Link className="text-link" href={personPath(w)}>
+                              {w.name}
+                            </Link>
+                          </span>
+                        ))}
+                    </dd>
                   </div>
                 )}
                 <div>

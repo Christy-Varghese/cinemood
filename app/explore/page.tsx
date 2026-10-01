@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import { VintageRail } from "@/components/revival/VintageRail";
 import type { Metadata } from "next";
 import { MovieRail } from "@/components/movie/MovieRail";
 import { ForYouRail } from "@/components/library/ForYouRail";
@@ -135,6 +136,10 @@ export default async function ExplorePage() {
       </section>
 
       {trending.ok ? <MovieRail title="Trending this week" subtitle="A blend of today's and this week's momentum." movies={list} href="/trending" priority /> : <ErrorState retryHref="/explore" />}
+
+      <Suspense fallback={<div className="section"><RailSkeleton /></div>}>
+        <VintageRail />
+      </Suspense>
 
       <Suspense
         fallback={

@@ -2,7 +2,7 @@
  * Structured server logging. Technical details stay in server logs —
  * users only ever see friendly copy.
  */
-type Area = "tmdb" | "ai" | "db" | "auth" | "recommendations" | "rate-limit" | "events" | "admin";
+type Area = "tmdb" | "sources" | "ai" | "db" | "auth" | "recommendations" | "rate-limit" | "events" | "admin";
 
 const counters: Record<string, number> = {};
 

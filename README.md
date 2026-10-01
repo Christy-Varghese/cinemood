@@ -73,6 +73,8 @@ MOBILE ─ Home          MOBILE ─ Swipe           Results grid: poster-first c
 | **Home** | Mood picker (12 featured + 8 more moods, max 3), optional refinements, Find My Movie, 🎲 Surprise Me, natural-language "Ask" box, personal rails, trending strip. The page's "screen glow" takes on the colours of the moods you pick. |
 | **Explore** | Trending spotlight, "Picked for your taste", browse-by-mood cards, trending this week, world-cinema rails (Korean, Malayalam, Japanese, Spanish, French, Hindi), language grid, in theatres, hidden gems, short & sweet, coming soon. |
 | **Swipe** | Tinder-style card stack: drag right → Watchlist, left → skip, up → love it; undo, tap to flip for synopsis, keyboard shortcuts; deck follows mood chips, language and your taste and refills from deeper result pages. |
+| **Cast & crew pages** | Tap any cast member, director or writer to open their page: photo, bio, age, birthplace, Instagram/IMDb links, a *Known for* rail and the full filmography — switch **grid ↔ list**, filter by department (Acting, Directing…), sort by newest, popular, top rated or oldest. |
+| **Old is gold** (`/revival`) | Older films (10+ years) suddenly trending again — e.g. after a viral Reels/TikTok clip. Instagram/TikTok have no public trends API, so it tracks the ripple instead: **Wikipedia page-view spikes** (Wikimedia + Wikidata, free, no key) vs each film's own baseline, plus **TMDB trending** filtered to older releases. Each card says why it's there ("Wikipedia views ↑ 4.2× · from 1994"). Also a rail on Explore and Trending. |
 | **Discover / results** | Weighted recommendation engine with sticky filter bar, removable filter chips, sort, labels ("Great mood match", "New discovery"…) and a one-line *why*. |
 | **Movie detail** | Cinematic backdrop hero, mood chips, Watchlist / Watched / Favorite / Like / Not for me, trailer, overview, **Why this matches your mood**, **Mood DNA** bars, cast, **TMDB user reviews** (paged, attributed, linked), licensed where-to-watch (JustWatch via TMDB), details, recommendations, JSON-LD. |
 | **Watchlist · Watched · Favorites** | Tabs with counts, filter by language/mood, sort, mark watched, 1–5 star personal ratings, favorites, watched stats (films, hours, languages). |
@@ -194,6 +196,8 @@ This product uses the TMDB API but is not endorsed or certified by TMDB. Streami
 
 **Now**
 - [x] Mood engine, recommendations, Explore, Swipe, Watchlist / Watched, reviews, deployed on Vercel
+- [x] Cast & crew filmography pages (grid/list), "Old is gold" vintage-trending page
+- [x] OMDb ratings (IMDb / Rotten Tomatoes / Metacritic) live
 - [ ] Add `OMDB_API_KEY` and `TRAKT_CLIENT_ID` in Vercel (ratings, awards line, Trakt trending)
 - [ ] Link the GitHub commit email to Vercel so pushes auto-deploy
 - [ ] Add TMDB's official logo next to the footer credit
