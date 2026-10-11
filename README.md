@@ -75,6 +75,9 @@ MOBILE ─ Home          MOBILE ─ Swipe           Results grid: poster-first c
 | **Swipe** | Tinder-style card stack: drag right → Watchlist, left → skip, up → love it; undo, tap to flip for synopsis, keyboard shortcuts; deck follows mood chips, language and your taste and refills from deeper result pages. |
 | **Cast & crew pages** | Tap any cast member, director or writer to open their page: photo, bio, age, birthplace, Instagram/IMDb links, a *Known for* rail and the full filmography — switch **grid ↔ list**, filter by department (Acting, Directing…), sort by newest, popular, top rated or oldest. |
 | **Old is gold** (`/revival`) | Older films (10+ years) suddenly trending again — e.g. after a viral Reels/TikTok clip. Instagram/TikTok have no public trends API, so it tracks the ripple instead: **Wikipedia page-view spikes** (Wikimedia + Wikidata, free, no key) vs each film's own baseline, plus **TMDB trending** filtered to older releases. Each card says why it's there ("Wikipedia views ↑ 4.2× · from 1994"). Also a rail on Explore and Trending. |
+| **In season** (`/season`) | The site follows the calendar by itself: spooky season in October, Thanksgiving (CA/US dates computed), Diwali, Halloween night, holiday films in December, Fresh start, Awards season, Valentine's, Pride, summer blockbusters, back to school, cozy autumn. The current season leads Home and Explore with its own colour, and the next one is previewed. Calendar logic is pure and unit-tested (`lib/trends/seasons.ts`). |
+| **Genre pulse** | Which genres are trending *above their usual share* this week (TMDB trending vs the all-time popular catalogue), e.g. "Horror ↑ 2.3×". On Explore, Trending and In season; refreshed every 3 hours. |
+| **Upcoming** (`/upcoming`) | Every notable film releasing this month (or next) in theatres or on digital, grouped by local release date, with full synopsis, genres, mood tags and one-tap Add to watchlist. Dates come from TMDB's per-country release dates. |
 | **Discover / results** | Weighted recommendation engine with sticky filter bar, removable filter chips, sort, labels ("Great mood match", "New discovery"…) and a one-line *why*. |
 | **Movie detail** | Cinematic backdrop hero, mood chips, Watchlist / Watched / Favorite / Like / Not for me, trailer, overview, **Why this matches your mood**, **Mood DNA** bars, cast, **TMDB user reviews** (paged, attributed, linked), licensed where-to-watch (JustWatch via TMDB), details, recommendations, JSON-LD. |
 | **Watchlist · Watched · Favorites** | Tabs with counts, filter by language/mood, sort, mark watched, 1–5 star personal ratings, favorites, watched stats (films, hours, languages). |
@@ -198,6 +201,7 @@ This product uses the TMDB API but is not endorsed or certified by TMDB. Streami
 - [x] Mood engine, recommendations, Explore, Swipe, Watchlist / Watched, reviews, deployed on Vercel
 - [x] Cast & crew filmography pages (grid/list), "Old is gold" vintage-trending page
 - [x] OMDb ratings (IMDb / Rotten Tomatoes / Metacritic) live
+- [x] Seasonal calendar, genre pulse, Upcoming release calendar
 - [ ] Add `OMDB_API_KEY` and `TRAKT_CLIENT_ID` in Vercel (ratings, awards line, Trakt trending)
 - [ ] Link the GitHub commit email to Vercel so pushes auto-deploy
 - [ ] Add TMDB's official logo next to the footer credit

@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { VintageRail } from "@/components/revival/VintageRail";
+import { SeasonSpotlight } from "@/components/season/SeasonSpotlight";
+import { GenrePulse } from "@/components/season/GenrePulse";
 import type { Metadata } from "next";
 import { MovieRail } from "@/components/movie/MovieRail";
 import { ForYouRail } from "@/components/library/ForYouRail";
@@ -65,7 +67,7 @@ async function MoreRails() {
       <MovieRail title="In theatres now" movies={d.now?.results ?? []} href="/movies?list=now_playing" />
       <MovieRail title="Hidden gems" subtitle="Loved by the people who found them — under 1,500 ratings, all above 7.4." movies={d.gems?.results ?? []} />
       <MovieRail title="Short and sweet" subtitle="Highly rated, and done in under 100 minutes." movies={d.short?.results ?? []} />
-      <MovieRail title="Coming soon" movies={d.upcoming?.results ?? []} href="/movies?list=upcoming" />
+      <MovieRail title="Coming soon" subtitle="Releasing in the weeks ahead — see the full calendar with synopses." movies={d.upcoming?.results ?? []} href="/upcoming" />
     </>
   );
 }
@@ -110,7 +112,15 @@ export default async function ExplorePage() {
         </section>
       )}
 
+      <Suspense fallback={<div className="section"><RailSkeleton /></div>}>
+        <SeasonSpotlight />
+      </Suspense>
+
       <ForYouRail />
+
+      <Suspense fallback={null}>
+        <GenrePulse />
+      </Suspense>
 
       <section className="section" aria-labelledby="by-mood">
         <div className="section-head">

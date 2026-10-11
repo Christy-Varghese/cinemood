@@ -140,6 +140,8 @@ export interface DiscoverParams {
   monetization?: ("flatrate" | "rent" | "buy" | "free" | "ads")[];
   releaseFrom?: string;
   releaseTo?: string;
+  /** TMDB keyword ids, OR-ed. */
+  keywords?: number[];
 }
 
 export async function discover(p: DiscoverParams) {
@@ -149,6 +151,7 @@ export async function discover(p: DiscoverParams) {
     include_video: false,
     with_genres: p.genres?.length ? p.genres.join(p.genreMode === "and" ? "," : "|") : undefined,
     with_original_language: p.language,
+    with_keywords: p.keywords?.length ? p.keywords.join("|") : undefined,
     with_origin_country: p.originCountry,
     "primary_release_date.gte": p.releaseFrom ?? (p.minYear ? `${p.minYear}-01-01` : undefined),
     "primary_release_date.lte": p.releaseTo ?? (p.maxYear ? `${p.maxYear}-12-31` : undefined),
@@ -190,12 +193,74 @@ export async function searchPeopleMovies(query: string) {
 }
 
 /** Keyword search (e.g. "time loop") → discover with that keyword. */
+/** Resolve keyword names ("christmas") to TMDB keyword ids — exact name match preferred. */
+export async function keywordIds(names: string[]) {
+  const ids = await Promise.all(
+    names.map(async (name) => {
+      const kw = await tmdb<RawPage<{ id: number; name: string }>>("/search/keyword", { query: name }, 60 * 60 * 24 * 7);
+      return (kw.results.find((k) => k.name.toLowerCase() === name.toLowerCase()) ?? kw.results[0])?.id;
+    }),
+  );
+  return ids.filter((x): x is number => typeof x === "number");
+}
+
 export async function searchByKeyword(query: string) {
   const kw = await tmdb<RawPage<{ id: number; name: string }>>("/search/keyword", { query }, 60 * 60 * 24);
   const exact = kw.results.find((k) => k.name.toLowerCase() === query.toLowerCase()) ?? kw.results[0];
   if (!exact) return { keyword: null, movies: [] as MovieSummary[] };
   const raw = await tmdb<RawPage<RawMovie>>("/discover/movie", { with_keywords: exact.id, sort_by: "popularity.desc", "vote_count.gte": 30, include_adult: false });
   return { keyword: exact.name, movies: normalizePage(raw).results };
+}
+
+/* ───────────── Release calendar ───────────── */
+
+export interface Release {
+  movie: MovieSummary;
+  /** Release date in the requested region (falls back to the worldwide premiere). */
+  date: string;
+  kind: "Theatrical" | "Limited" | "Digital" | "Premiere";
+}
+
+const RELEASE_KIND: Record<number, Release["kind"]> = { 1: "Premiere", 2: "Limited", 3: "Theatrical", 4: "Digital" };
+
+/**
+ * Films with a theatrical or digital release in `region` between two dates, most-anticipated first.
+ * Each is checked against TMDB's per-country release dates so the date shown is the local one.
+ */
+export async function getReleases(from: string, to: string, region = env.defaultRegion, limit = 48): Promise<Release[]> {
+  const params = (page: number) => ({
+    page,
+    region,
+    "release_date.gte": from,
+    "release_date.lte": to,
+    with_release_type: "2|3|4",
+    sort_by: "popularity.desc",
+    include_adult: false,
+  });
+  const pages = await Promise.allSettled([1, 2, 3].map((p) => tmdb<RawPage<RawMovie>>("/discover/movie", params(p), 60 * 60 * 6)));
+  if (pages.every((p) => p.status === "rejected")) throw (pages[0] as PromiseRejectedResult).reason;
+  const seen = new Set<number>();
+  const movies = pages
+    .flatMap((p) => (p.status === "fulfilled" ? p.value.results : []))
+    .filter((m) => !m.adult && (seen.has(m.id) ? false : (seen.add(m.id), true)))
+    .slice(0, limit);
+
+  type RawDates = { results: { iso_3166_1: string; release_dates: { release_date: string; type: number }[] }[] };
+  const detailed = await Promise.allSettled(movies.map((m) => tmdb<RawDates>(`/movie/${m.id}/release_dates`, {}, 60 * 60 * 24)));
+  const out: Release[] = [];
+  movies.forEach((m, i) => {
+    const d = detailed[i];
+    const local = d.status === "fulfilled" ? d.value.results.find((r) => r.iso_3166_1 === region)?.release_dates ?? [] : [];
+    const inRange = local
+      .filter((r) => r.type >= 2 && r.type <= 4)
+      .map((r) => ({ date: r.release_date.slice(0, 10), type: r.type }))
+      .filter((r) => r.date >= from && r.date <= to)
+      .sort((a, b) => a.date.localeCompare(b.date) || b.type - a.type)[0];
+    const date = inRange?.date ?? (m.release_date && m.release_date >= from && m.release_date <= to ? m.release_date : null);
+    if (!date) return;
+    out.push({ movie: normalizeMovie(m), date, kind: RELEASE_KIND[inRange?.type ?? 3] ?? "Theatrical" });
+  });
+  return out.sort((a, b) => a.date.localeCompare(b.date) || b.movie.popularity - a.movie.popularity);
 }
 
 /* ───────────── Details & reviews ───────────── */

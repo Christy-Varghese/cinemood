@@ -2582,3 +2582,252 @@ a.cast-member:hover strong {
   color: var(--text-2);
   line-height: 1.55;
 }
+
+/* ───────── Seasons ───────── */
+.season-block {
+  --season: var(--marquee);
+  position: relative;
+  border-radius: 24px;
+  padding: 24px 22px 10px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in oklab, var(--season) 26%, transparent), transparent 55%),
+    linear-gradient(180deg, color-mix(in oklab, var(--season) 8%, var(--bg-elev)), var(--bg-elev));
+  border: 1px solid color-mix(in oklab, var(--season) 30%, var(--line));
+  overflow: hidden;
+}
+.season-head {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.season-emoji {
+  font-size: 2.6rem;
+  line-height: 1;
+  filter: drop-shadow(0 6px 18px color-mix(in oklab, var(--season) 60%, transparent));
+}
+.season-copy h2 {
+  margin: 2px 0 4px;
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+}
+.season-why {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--season) 75%, var(--text));
+}
+.season-tagline {
+  margin: 0;
+  color: var(--text-2);
+  max-width: 60ch;
+}
+.season-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin-top: 14px;
+}
+.season-more .see-all {
+  font-weight: 700;
+  color: var(--marquee);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.season-next {
+  --season: var(--marquee);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 40px 0 10px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px dashed color-mix(in oklab, var(--season) 50%, var(--line));
+  background: color-mix(in oklab, var(--season) 7%, transparent);
+}
+.season-next > span {
+  font-size: 2rem;
+}
+.season-next strong {
+  font-size: 1.15rem;
+}
+.season-next p:last-child {
+  margin: 2px 0 0;
+  color: var(--text-2);
+}
+@media (max-width: 640px) {
+  .season-block {
+    padding: 18px 14px 6px;
+    border-radius: 18px;
+  }
+  .season-emoji {
+    font-size: 2rem;
+  }
+}
+
+/* ───────── Genre pulse ───────── */
+.pulse-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.pulse-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px 16px;
+  border-radius: 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.pulse-item:hover {
+  border-color: color-mix(in oklab, var(--marquee) 55%, transparent);
+  transform: translateY(-1px);
+}
+.pulse-rank {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--muted);
+  width: 1.4em;
+}
+.pulse-lift {
+  font-weight: 800;
+  color: #5fd38a;
+  font-variant-numeric: tabular-nums;
+}
+.pulse-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: var(--w);
+  background: linear-gradient(90deg, var(--marquee), #f2667a);
+}
+
+/* ───────── Upcoming ───────── */
+.release-days {
+  display: grid;
+  gap: 34px;
+}
+.release-date {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: sticky;
+  top: calc(var(--header-h, 64px) + 4px);
+  z-index: 2;
+  margin: 0 0 14px;
+  padding: 8px 0;
+  font-size: 1.05rem;
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+.release-date em {
+  font-style: normal;
+}
+.release-day.is-past {
+  opacity: 0.72;
+}
+.release-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.release-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 20px;
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+}
+.release-poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-raised);
+}
+.release-poster img {
+  object-fit: cover;
+}
+.release-body {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+.release-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  line-height: 1.15;
+}
+.release-title:hover {
+  color: var(--marquee);
+}
+.release-meta {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.release-kind {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--marquee);
+  background: color-mix(in oklab, var(--marquee) 14%, transparent);
+}
+.release-synopsis {
+  margin: 4px 0 0;
+  color: var(--text-2);
+  line-height: 1.55;
+  max-width: 75ch;
+}
+.release-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+}
+@media (max-width: 640px) {
+  .release-row {
+    grid-template-columns: 84px 1fr;
+    gap: 14px;
+    padding: 12px;
+  }
+  .release-title {
+    font-size: 1.1rem;
+  }
+  .release-synopsis {
+    font-size: 0.92rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

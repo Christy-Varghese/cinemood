@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { VintageRail } from "@/components/revival/VintageRail";
+import { GenrePulse } from "@/components/season/GenrePulse";
 import { MovieRail } from "@/components/movie/MovieRail";
 import { ConfigNotice, ErrorState, RailSkeleton } from "@/components/ui/States";
 import { discover, getList } from "@/lib/tmdb/movies";
@@ -47,6 +48,9 @@ export default async function TrendingPage() {
         <h1>Trending</h1>
         <p>Blended from today&apos;s and this week&apos;s momentum — then sliced by region, language and mood.</p>
       </header>
+      <Suspense fallback={null}>
+        <GenrePulse />
+      </Suspense>
       <MovieRail title="Trending globally" subtitle="TMDB momentum blended with what Trakt members are watching." movies={global} priority />
       <Suspense fallback={<div className="section"><RailSkeleton /></div>}>
         <VintageRail />

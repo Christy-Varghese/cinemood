@@ -15,11 +15,13 @@ const DESKTOP = [
   { href: "/moods", label: t.nav.moods },
   { href: "/languages", label: t.nav.languages },
   { href: "/trending", label: t.nav.trending },
+  { href: "/season", label: "In season" },
+  { href: "/upcoming", label: "Upcoming" },
 ];
 
 const MOBILE: { href: string; label: string; icon: IconName; match?: string[] }[] = [
   { href: "/", label: t.nav.home, icon: "home" },
-  { href: "/explore", label: t.nav.explore, icon: "compass", match: ["/explore", "/discover", "/moods", "/mood", "/languages", "/language", "/trending", "/genre", "/movies"] },
+  { href: "/explore", label: t.nav.explore, icon: "compass", match: ["/explore", "/discover", "/moods", "/mood", "/languages", "/language", "/trending", "/genre", "/movies", "/season", "/revival", "/upcoming"] },
   { href: "/swipe", label: t.nav.swipe, icon: "cards" },
   { href: "/watchlist", label: t.nav.watchlist, icon: "bookmark", match: ["/watchlist", "/watched", "/favorites"] },
   { href: "/profile", label: t.nav.profile, icon: "user", match: ["/profile", "/auth"] },

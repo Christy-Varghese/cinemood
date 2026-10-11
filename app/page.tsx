@@ -5,6 +5,7 @@ import { MovieRail } from "@/components/movie/MovieRail";
 import { RailSkeleton } from "@/components/ui/States";
 import { trendingBlend } from "@/lib/recommendations/service";
 import { load } from "@/lib/load";
+import { SeasonSpotlight } from "@/components/season/SeasonSpotlight";
 
 export const revalidate = 3600;
 
@@ -23,6 +24,17 @@ export default function HomePage() {
     <>
       <MoodPicker />
       <HomePersonal />
+      <Suspense
+        fallback={
+          <div className="container section">
+            <RailSkeleton />
+          </div>
+        }
+      >
+        <div className="container">
+          <SeasonSpotlight />
+        </div>
+      </Suspense>
       <Suspense
         fallback={
           <div className="container section">
