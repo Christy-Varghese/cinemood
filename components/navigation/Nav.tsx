@@ -13,9 +13,8 @@ const DESKTOP = [
   { href: "/swipe", label: t.nav.swipe },
   { href: "/discover", label: t.nav.discover },
   { href: "/moods", label: t.nav.moods },
-  { href: "/languages", label: t.nav.languages },
   { href: "/trending", label: t.nav.trending },
-  { href: "/season", label: "In season" },
+  { href: "/season", label: "Seasonal" },
   { href: "/upcoming", label: "Upcoming" },
 ];
 

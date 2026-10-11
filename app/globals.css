@@ -288,7 +288,8 @@ main {
   gap: 4px;
 }
 .main-nav a {
-  padding: 8px 12px;
+  padding: 8px 11px;
+  white-space: nowrap;
   border-radius: 999px;
   color: var(--text-2);
   font-weight: 600;
@@ -2830,4 +2831,19 @@ a.cast-member:hover strong {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+.release-past {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.release-past > summary {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 18px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }

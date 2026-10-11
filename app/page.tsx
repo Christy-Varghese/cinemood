@@ -14,7 +14,12 @@ async function TrendingStrip() {
   if (!res.ok) return null; // the mood picker is the page; trending is a bonus
   return (
     <div className="container">
-      <MovieRail title="What the world is watching" subtitle="Trending this week across every language." movies={res.data.slice(0, 16)} href="/trending" />
+      <MovieRail
+        title="What the world is watching"
+        subtitle="Trending this week across every language."
+        movies={res.data.slice(0, 16)}
+        href="/trending"
+      />
     </div>
   );
 }
@@ -23,7 +28,6 @@ export default function HomePage() {
   return (
     <>
       <MoodPicker />
-      <HomePersonal />
       <Suspense
         fallback={
           <div className="container section">
@@ -35,6 +39,7 @@ export default function HomePage() {
           <SeasonSpotlight />
         </div>
       </Suspense>
+      <HomePersonal />
       <Suspense
         fallback={
           <div className="container section">
